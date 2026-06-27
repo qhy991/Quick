@@ -7,6 +7,7 @@
 #   bash apply-config.sh codex-proxy          # Codex + 自定义 openai_base_url
 #   bash apply-config.sh codex-official       # Codex 官方 OpenAI
 #   bash apply-config.sh codex-custom         # Codex 自定义 model_provider
+#   bash apply-config.sh infini-ai            # Infini-AI MaaS（推荐）
 
 set -euo pipefail
 
@@ -27,6 +28,7 @@ usage() {
   codex-proxy       Codex + openai_base_url 代理
   codex-official    Codex + OpenAI 官方 API
   codex-custom      Codex + 自定义 model_providers
+  infini-ai         Infini-AI MaaS (Claude Code + Codex 一键配置)
 
 模板目录: $TEMPLATE_DIR
 目标:
@@ -65,9 +67,10 @@ PY
 }
 
 apply_codex_auth_env() {
+  local auth_template="${1:-$TEMPLATE_DIR/codex/auth.env.template}"
   mkdir -p "$CODEX_DIR"
   if [[ ! -f "$CODEX_DIR/auth.env" ]]; then
-    cp "$TEMPLATE_DIR/codex/auth.env.template" "$CODEX_DIR/auth.env"
+    cp "$auth_template" "$CODEX_DIR/auth.env"
     echo "已创建 $CODEX_DIR/auth.env — 请编辑填入 API Key"
   else
     echo "保留已有 $CODEX_DIR/auth.env"
@@ -96,7 +99,8 @@ if [[ -z "$pick" ]]; then
   echo "  4) codex-official"
   echo "  5) codex-custom"
   echo "  6) 全部 (claude-gateway + codex-proxy)"
-  read -rp "输入编号 [1-6]: " n
+  echo "  7) infini-ai (Infini-AI MaaS，推荐)"
+  read -rp "输入编号 [1-7]: " n
   case "$n" in
     1) pick=claude-gateway ;;
     2) pick=claude-official ;;
@@ -104,6 +108,7 @@ if [[ -z "$pick" ]]; then
     4) pick=codex-official ;;
     5) pick=codex-custom ;;
     6) pick=all ;;
+    7) pick=infini-ai ;;
     *) echo "无效选择"; usage; exit 1 ;;
   esac
 fi
@@ -140,6 +145,15 @@ apply_codex_custom() {
   echo "已写入 $CODEX_DIR/config.toml"
 }
 
+apply_infini_ai() {
+  merge_claude_env "$TEMPLATE_DIR/claude/settings.infini-ai.template.json"
+  mkdir -p "$CODEX_DIR"
+  backup "$CODEX_DIR/config.toml"
+  cp "$TEMPLATE_DIR/codex/config.infini-ai.template.toml" "$CODEX_DIR/config.toml"
+  apply_codex_auth_env "$TEMPLATE_DIR/codex/auth.infini-ai.env.template"
+  echo "已配置 Infini-AI MaaS: https://cloud.infini-ai.com/maas/v1"
+}
+
 case "$pick" in
   claude-gateway) apply_claude_gateway ;;
   claude-official) apply_claude_official ;;
@@ -150,6 +164,7 @@ case "$pick" in
     apply_claude_gateway
     apply_codex_proxy
     ;;
+  infini-ai) apply_infini_ai ;;
   -h|--help|help) usage; exit 0 ;;
   *) echo "未知场景: $pick"; usage; exit 1 ;;
 esac

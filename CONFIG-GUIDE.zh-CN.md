@@ -25,6 +25,7 @@ cd Quick   # 或 git clone 后的目录
 bash apply-config.sh
 
 # 或直接指定场景
+bash apply-config.sh infini-ai        # Infini-AI MaaS（推荐）
 bash apply-config.sh claude-gateway   # Claude 第三方网关
 bash apply-config.sh codex-proxy      # Codex 自定义 Base URL
 
@@ -37,6 +38,50 @@ source ~/.profile
 claude    # 内执行 /status 验证
 codex doctor
 ```
+
+---
+
+## Infini-AI MaaS（推荐）
+
+Base URL：`https://cloud.infini-ai.com/maas/v1`
+
+一键配置：
+
+```bash
+bash apply-config.sh infini-ai
+vim ~/.claude/settings.json    # 填写 ANTHROPIC_AUTH_TOKEN
+vim ~/.codex/auth.env          # 填写 OPENAI_API_KEY（Infini-AI 平台 API Key）
+source ~/.profile
+```
+
+**Claude Code**（`~/.claude/settings.json`）：
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://cloud.infini-ai.com/maas/v1",
+    "ANTHROPIC_AUTH_TOKEN": "你的Infini-AI-API-Key",
+    "ANTHROPIC_MODEL": "claude-sonnet-4-6"
+  }
+}
+```
+
+**Codex**（`~/.codex/config.toml` + `~/.codex/auth.env`）：
+
+```toml
+openai_base_url = "https://cloud.infini-ai.com/maas/v1"
+model = "gpt-5.3-codex"
+model_provider = "openai"
+```
+
+```bash
+OPENAI_API_KEY=你的Infini-AI-API-Key
+```
+
+模板文件：
+- `config-templates/claude/settings.infini-ai.template.json`
+- `config-templates/codex/config.infini-ai.template.toml`
+- `config-templates/codex/auth.infini-ai.env.template`
 
 ---
 

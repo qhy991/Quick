@@ -40,7 +40,7 @@ codex --version
 ## 配置 Base URL 和 API Key
 
 ```bash
-bash apply-config.sh              # 交互选择场景
+bash apply-config.sh infini-ai     # Infini-AI MaaS（推荐）
 bash apply-config.sh claude-gateway
 bash apply-config.sh codex-proxy
 
