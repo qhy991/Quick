@@ -20,7 +20,7 @@
 ## 快速开始（Infini-AI，推荐）
 
 ```bash
-cd Quick
+cd QuickSetUp
 
 bash apply-config.sh infini-ai
 

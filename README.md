@@ -1,8 +1,10 @@
-# Quick
+# QuickSetUp
 
 Linux 用户级 AI 开发工具一键安装与配置（无需 sudo）。
 
 适用于外网受限环境：优先使用国内镜像（npmmirror），GitHub 推荐 SSH。
+
+仓库地址：[github.com/qhy991/QuickSetUp](https://github.com/qhy991/QuickSetUp)
 
 ## 包含工具
 
@@ -18,8 +20,8 @@ Linux 用户级 AI 开发工具一键安装与配置（无需 sudo）。
 ### 1. 安装
 
 ```bash
-git clone git@github.com:qhy991/Quick.git
-cd Quick
+git clone git@github.com:qhy991/QuickSetUp.git
+cd QuickSetUp
 bash install-ai-tools.sh
 source ~/.profile
 

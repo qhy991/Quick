@@ -14,8 +14,8 @@
 ## 1. 一键安装
 
 ```bash
-git clone git@github.com:qhy991/Quick.git
-cd Quick
+git clone git@github.com:qhy991/QuickSetUp.git
+cd QuickSetUp
 bash install-ai-tools.sh
 source ~/.profile
 ```
